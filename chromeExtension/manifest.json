@@ -11,7 +11,7 @@
 	"content_scripts" : [
 		{
 			"matches" : ["*://*/*"],
-			"js" : ["jquery-3.1.1.min.js","Chart.bundle.min.js","app.js"],
+			"js" : ["jquery-3.1.1.min.js","Chart.bundle.min.js","sweetalert.min.js","app.js"],
 			"css" : ["animate.css","app.css"]
 		}
 	],

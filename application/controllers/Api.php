@@ -32,8 +32,6 @@ class Api extends CI_Controller {
     		}
 		}
 
-
-
 		if($areaId){		
 			//跟areaData方法取資料
 			$a = $this->areaData($areaId);

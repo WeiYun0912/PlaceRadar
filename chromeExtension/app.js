@@ -60,13 +60,14 @@ $("#mwt_slider_btn_close").click(function(){
 
 $("#mwt_slider_btn_new").click(function(){
  	closeTab();
- 	window.open(url+'hackathon/home/single?addr='+thisAddr,'PlaceRadar','width=800,height=1400, toolbar=yes')
+ 	window.open(url+'hackathon/home/single?addr='+thisAddr+'&country='+thisCountry,'PlaceRadar','width=800,height=1400, toolbar=yes')
 });
 
 
 
 //請求地址
 function addScriptTag(addr,country) {
+	thisCountry = country;
 	var getCountry="";
 	if(country == "zh-TW"){
 		getCountry = "臺灣";
@@ -83,11 +84,16 @@ function addScriptTag(addr,country) {
 			   country : country},
 	})
 	.done(function(e) {
-		var addr = e['results'][0]['formatted_address'];
-		var latLng = e['results'][0]['geometry']['location']['lat']+","+e['results'][0]['geometry']['location']['lng'];
-		console.log(latLng);
-		thisAddr = addr;
-		takeAddrSearch(addr,getCountry,latLng);
+		if(e['status'] != "ZERO_RESULTS"){
+			var addr = e['results'][0]['formatted_address'];
+			var latLng = e['results'][0]['geometry']['location']['lat']+","+e['results'][0]['geometry']['location']['lng'];
+			//console.log(latLng);
+			thisAddr = addr;
+			takeAddrSearch(addr,getCountry,latLng);
+			$('#mwt_slider_search_text').val(addr);
+		}else{
+			swal("錯誤","尋找不到這個地址的資訊，請重新再試","error");
+		}
 		// console.log(addr);
 		// console.log(latLng);
 	})
@@ -109,6 +115,7 @@ function takeAddrSearch(addr,country,latLng){
 		drawCharLine(json[0]['estate']);
 		drawCharDoughnut(json[1]);
 		drawCharRadar([json[0]['lifeindex'],json[0]['accident']]);
+		openTab();
 	})
 	.fail(function() {
 		console.log("error");
@@ -124,21 +131,15 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	var event = message.content.split(',');
 	if (toggleBg) {
 		if(event[0] != "視窗腳本呼叫"){;
-			$('#mwt_slider_search_text').val(event[0]);
 			addScriptTag(event[0],event[1]);
 		}
-        openTab();
     } else {
     	if(event[0] == "視窗腳本呼叫"){
 			closeTab();
 		}else{
-			$('#mwt_slider_search_text').val(event[0]);
 			addScriptTag(event[0],event[1]);
 		}
-    } 
-	//alert(message.content);
-	//console.log(message);
-    
+    }     
 });	
 
 

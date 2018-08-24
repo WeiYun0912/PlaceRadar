@@ -38,11 +38,10 @@
 	  }
 	  .fa-close{
 	  	font-size:24px;
-	  	color:red;
 	  	position: absolute;
 	  	top: 5px;
 	  	right: 15px;
-	  	background-color: rgba(255,205,205,0.5);
+		border-radius: 5px;
 	  	border:0px;
 	  }
 	  .divborder{
@@ -79,9 +78,9 @@
 								<div class="dropdown category-dropdown">
 									<a data-toggle="dropdown" href="#"><span class="change-text">Select Country</span> <i class="fa fa-angle-down"></i></a>
 									<ul class="dropdown-menu category-change">
-										<li><a class="dropdown-item" href="#">Taiwan</a></li>
-										<li><a class="dropdown-item" href="#">Japan Tokyo</a></li>
-										<li><a class="dropdown-item" href="#">Korea Seoul</a></li>
+										<li><a id="taiwan" value="taiwan" class="dropdown-item" href="#">Taiwan</a></li>
+										<li><a id="japan" value="japan" class="dropdown-item" href="#">Japan Tokyo</a></li>
+										<li><a id="korea" value="korea" class="dropdown-item" href="#">Korea Seoul</a></li>
 									</ul>
 								</div><!-- category-change -->
 
@@ -140,9 +139,14 @@
 	<script src="<?php echo base_url('kit/js/custom.js')?>"></script>
 	<!-- Map -->
 	<script>
+		var country='';
+		var address,language,context,tcontext='台灣';
 		var lat=0,lng=0;
 		var foodScore=0,healthScore=0,vitalScore=0,lifeScore=0,trafficScore=0;
 		var estate,estate2013,estate2014,estate2015,estate2016,estate2017,age;
+		var judge=true;
+
+
 		$.fn.tinyMapConfigure({
 			'key': 'AIzaSyA5-u0mPsieWiTBHOmwsJW4sXy0HAyHwCw',
 			// 載入的函式庫名稱，預設 null
@@ -154,98 +158,169 @@
 			'zoom'  : 5,
 			'markerFitBounds':true
 		});
-		$(".dropdown-item").click(function(){
-			var contury=this.text;
-			$("#map").tinyMap('panTo',contury);
-			if(contury=='Taiwan')
-				$("#map").tinyMap('modify',{zoom:8});
-			else
-				$("#map").tinyMap('modify',{zoom:10});
-		});
-		function search(){
-			if(mark < 3){
-				var address=$("#address").val();
-				$("#map").tinyMap('query',address,function(addr){
-					lat=addr.geometry.location.lat(); // Latitude
-	    			lng=addr.geometry.location.lng(); // Longitude
-	    			console.log(lat,lng);
-	    			var  intact_addr=(addr.formatted_address).substr(3,(addr.formatted_address).length);
-					console.log(intact_addr);
-					if((addr.formatted_address).indexOf('台灣') > -1){
-		    			var LaL=lat+','+lng;
-		    			if(compare(LaL)==true){
-		    				latlng[mark]=LaL;
-		    				$("#map").tinyMap('panTo',[lat,lng]);
-		    				$("#map").tinyMap('modify',{zoom:12});
-		    				getdata(intact_addr);
-		    				panToMarker(lat,lng);
-		    			}else{
-		    				alert("Already have the same mark!");
-		    			}
-		    		}else{
-		    			alert("This search location is not in Taiwan!");
-		    		}
-	    		});
-
-				function getdata(str){
-					console.log(str);
-					$.ajax({
-						url: "<?php echo base_url('api/addrSearch') ?>",
-				        type: "POST",
-				        data: {addr: str.substr(str) , country:'臺灣'},
-				        dataType: "json",
-				        success: function (data) {
-				            console.log(data[0]);
-				            lifeScore=data[0]['lifeindex'];
-				            trafficScore=data[0]['accident'];
-				            estate=data[0]['estate'];
-				            estate2013=estate[0].split(',');
-				            estate2014=estate[1].split(',');
-				            estate2015=estate[2].split(',');
-				            estate2016=estate[3].split(',');
-				            estate2017=estate[4].split(',');
-				            console.log(estate2013);
-				        }
-				    });
-				}
-				function compare(LaL){//判斷是否有相同的點
-					var check=true;
-					for(var i=0;i<mark;i++){
-						if(LaL == latlng[i]){
-							check=false;
-						}
+		$("#taiwan").click(function(){
+			country='Taiwan';
+			language='zh-TW';
+			context='臺灣';
+			console.log(country,language,context);
+			$("#map").tinyMap('panTo',country);
+			$("#map").tinyMap('modify',{zoom:8});
+		})
+		$("#japan").click(function(){
+			country='Japan Tokyo';
+			language='ja-JP';
+			context='日本';
+			console.log(country,language,context);
+			$("#map").tinyMap('panTo',country);
+			$("#map").tinyMap('modify',{zoom:10});
+		})
+		$("#korea").click(function(){
+			country='Korea Seoul';
+			language='ko';
+			context='대한민국';
+			console.log(country,language,context);
+			$("#map").tinyMap('panTo',country);
+			$("#map").tinyMap('modify',{zoom:10});
+		})
+		$(document).ready(function(){
+			<?php 
+				if(isset($country) && isset($addr)){
+					if($country=='zh-TW'){
+						echo "$('#taiwan').click();";
+					}else if($country=='ja-JP'){
+						echo "$('#japan').click();";
+					}else if($country=='ko'){
+						echo "$('#korea').click();";
 					}
-					return check;
+					echo "$('#address').val('".$addr."');";
+					echo "setTimeout('search()',500);";
 				}
-				function panToMarker(sLet,sLng){
-					var searchNum=0;
-					console.log("標點方法執行");
-					$("#map").tinyMap('modify',{
-						'marker' : [{
-							'id':markID[0],
-							'addr':[lat,lng],
-							'text':'<strong>'+'label'+markID[0]+'</strong>',
-							'icon':{
-								url : "<?php echo base_url('kit/images/MARKER/')?>"+markerColor[ColorChange()]+'.png',
-								scaledSize: [35, 50]
-							},
-							'animation':'DROP',
-							'event':{
-								'created':function(){
-									if(searchNum == 1){
-										console.log("已標點,newData");
-										//localSearch(sLet,sLng);
-										foodFunction(sLet,sLng);
-									}else{
-										searchNum++;
+			?>
+		})
+		
+		function search(){
+			console.log(country);
+			if(country!=''){
+				if(mark<3){
+					$.ajax({
+						url:'<?php echo base_url('api/getSearchJson')?>',
+						type:"POST",
+						data:{searchText:$("#address").val(),
+							  country:language},
+						dataType:"json",
+						success:function(data){
+							var intact_addr=data['results'][0]['formatted_address'];
+							lat=data['results'][0]['geometry']['location']['lat'];
+							lng=data['results'][0]['geometry']['location']['lng'];
+							console.log(intact_addr,lat,lng,context);
+							if(intact_addr.indexOf(context) > -1 || intact_addr.indexOf(tcontext) > -1){
+			    				var LaL=lat+','+lng;
+				    			if(compare(LaL)==true){
+			    					getdata(intact_addr,lat,lng);
+				    			}else{
+				    				alert("Already have the same mark!");
+				    			}
+				    		}else{
+				    			alert("This search location is not in "+country+"!");
+				    		}
+						}
+
+					});
+
+					// $("#map").tinyMap('query',$("#address").val(),function(addr){
+					// 	lat=addr.geometry.location.lat(); // Latitude
+					// 	lng=addr.geometry.location.lng(); // Longitude
+					// 	console.log(lat,lng);
+					// 	console.log(addr.formatted_address);
+					// 	var intact_addr=(addr.formatted_address);				
+					// 	if((addr.formatted_address).indexOf('台灣') > -1){
+					// 		var LaL=lat+','+lng;
+					// 		if(compare(LaL)==true){
+					// 			getdata(intact_addr,lat,lng);
+					// 		}else{
+					// 			alert("Already have the same mark!");
+					// 		}
+					// 	}else{
+					// 	alert("This search location is not in Taiwan!");
+					// 	}
+					// })
+					function getdata(str,lat,lng){
+						console.log(str,lat,lng);
+						// if(context=='台灣'){
+						// 	context='臺灣';
+						// }
+						$.ajax({
+							url: "<?php echo base_url('api/addrSearch') ?>",
+							type: "POST",
+							data: {addr: str , country:context=="대한민국"?"韓國":context},
+							dataType: "json",
+							success: function (data) {
+								if(data != 444){
+									//接值
+									console.log("test");
+									console.log(data[0]);
+									lifeScore=data[0]['lifeindex'];
+								    trafficScore=data[0]['accident'];
+						            estate=data[0]['estate'];
+						            estate2013=estate[0].split(',');
+						            estate2014=estate[1].split(',');
+						            estate2015=estate[2].split(',');
+						            estate2016=estate[3].split(',');
+						            estate2017=estate[4].split(',');
+						            age=data[0]['age'].split(',');
+						            //前往標記
+						            latlng[mark]=lat+','+lng;
+				    				$("#map").tinyMap('panTo',[lat,lng]);
+				    				$("#map").tinyMap('modify',{zoom:12});
+				    				panToMarker(lat,lng);
+						        }else{
+						        	console.log("test");
+				    				alert("Can't find data for this location.");
+				    			}
+					        }
+					    })
+					}
+					function compare(LaL){//判斷是否有相同的點
+						var check=true;
+						for(var i=0;i<mark;i++){
+							if(LaL == latlng[i]){
+								check=false;
+							}
+						}
+						return check;
+					}
+					function panToMarker(sLet,sLng){
+						var searchNum=0;
+						console.log("標點方法執行");
+						$("#map").tinyMap('modify',{
+							'marker' :[{
+								'id':markID[0],
+								'addr':[lat,lng],
+								'text':'<strong>'+'label'+markID[0]+'</strong>',
+								'icon':{
+									url : "<?php echo base_url('kit/images/MARKER/')?>"+markerColor[ColorChange()]+'.png',
+									scaledSize: [35, 50]
+								},
+								'animation':'DROP',
+								'event':{
+									'created':function(){
+										if(searchNum == 1){
+											console.log("已標點,newData");
+											//localSearch(sLet,sLng);
+											foodFunction(sLet,sLng);
+										}else{
+											searchNum++;
+										}
 									}
 								}
-							}
-						}]
-					})
+							}]
+						})
+					}
+				}else{
+					alert('已達比對數上限(3筆)，請先關閉多於資料。')
 				}
 			}else{
-				alert('已達比對數上限(3筆)，請先關閉多於資料。')
+				alert("Please choose the country first!");
 			}
 		}
 		function clearLabel(num){
@@ -555,7 +630,7 @@
 
 		//創建新Data物件
 		function newData(){
-			$("#data").append('<div class="dataChild "> <div class="divborder" data-num="'+markID[0]+'" style="border-color:'+bgColor[ColorChange()]+';" > <button data-num="'+markID[0]+'" class="fa fa-close" onclick="closeDiv(this)"> </button> </div></div>');
+			$("#data").append('<div class="dataChild "> <div class="divborder" data-num="'+markID[0]+'" style="border-color:'+bgColor[ColorChange()]+';" > <button data-num="'+markID[0]+'" class="fa fa-close" style="background: -webkit-radial-gradient(circle,white,'+bgColor[ColorChange()]+'); color:'+markerColor[ColorChange()]+'" onclick="closeDiv(this)"> </button><h2>'+$("#address").val()+'</h2> </div></div>');
 			chartID++;
 			radar(markID[0]);
 			doughnut(markID[0]);
@@ -640,16 +715,16 @@
 			var doughnutChart = new Chart(ctx,{
 				type: 'doughnut',
 				data: {
-					labels : ['man','woman','others'],
+					labels : ['0~14','15~64','65↑','others'],
 					datasets : [{
-						backgroundColor : ['#9191FF','#FF8585','#6CFF92'],
-						data : [10,20,30]
+						backgroundColor : ['#9191FF','#FF8585','#6CFF92','#FFB047'],
+						data : age
 					}]
 				},
 				options:{
 					title:{
 						display:true,
-						text:'Population ratio',
+						text:'Population age ratio',
 						fontFamily:'微軟正黑體',
 						fontSize:25
 					},
@@ -660,6 +735,9 @@
 							fontColor:'black' ,
 							fontSize:15
 						},
+					},
+					animation:{
+						duration:5000
 					}
 				}
 			});
