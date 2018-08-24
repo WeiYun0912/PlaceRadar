@@ -17,6 +17,10 @@ class Api_model extends CI_Model{
 	public function get_AreaData($areaId){
 		$this->db->select("crime.crime_cnt,".
 			"police_station.station_cnt,".
+			"population_density.0to14,".
+			"population_density.15to64,".
+			"population_density.65up,".
+			"population_density.unknow_age,".
 			"population_density.t_men,".
 			"population_density.t_women,".
 			"traffic_accident.accident_cnt"
@@ -35,8 +39,13 @@ class Api_model extends CI_Model{
 				'crimeData' => $row->{"crime_cnt"},
 				'policeData' => $row->{"station_cnt"},
 				'trafficData' => $row->{"accident_cnt"},
+				'0to14' => $row->{"0to14"},
+				'15to64' => $row->{"15to64"},
+				'65up' => $row->{"65up"},
+				'unknow_age' => $row->{"unknow_age"},
 				'man' => $row->{"t_men"},
 				'woman' => $row->{"t_women"},
+				
 			);
 		}
 		return $array;
@@ -131,6 +140,11 @@ class Api_model extends CI_Model{
 			return false;
 		}
 
+	}
+
+	public function get_CountryArea(){
+		$result = $this->db->get('country_area')->result();
+		return $result;
 	}
 
 
