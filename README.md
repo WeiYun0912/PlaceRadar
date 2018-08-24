@@ -67,7 +67,7 @@
 
 |編號| 主題 | 網址 |原始資料來源|
 | --- | --- |--- |---|
-|1|開放性資料1|[開放性資料](https://www.data.go.kr/)|[資料來源](https://www.data.go.kr/)
+|1|開放性資料1|[開放性資料1](https://www.data.go.kr/)|[資料來源](https://www.data.go.kr/)
 |2|開放性資料2|[開放性資料2](http://kosis.kr/index/index.do)|[資料來源](http://kosis.kr/index/index.do)
 |3|警察局相關資料(2017)|[警察局相關資料(2017)](https://www.data.go.kr/dataset/3075501/fileData.do)|[資料來源](https://www.data.go.kr/)
 |4|犯罪統計(2016)|[犯罪統計(2016)](https://www.data.go.kr/dataset/3074462/fileData.do)|[資料來源](https://www.data.go.kr/)
