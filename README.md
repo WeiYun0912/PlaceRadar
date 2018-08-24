@@ -51,6 +51,7 @@
 |2|犯罪資料|[犯罪資料](https://data.gov.tw/dataset/14200 )|[資料來源](https://data.gov.tw/)
 |3|即時交通事故資料|[即時交通事故資料](https://data.gov.tw/dataset/13139) |[資料來源](https://data.gov.tw/)
 |4|各縣(市)警察局暨所屬分駐(派出)所地址資料| [各縣(市)警察局暨所屬分駐(派出)所地址資料](https://data.gov.tw/dataset/5958 )|[資料來源](https://data.gov.tw/)
+|5|不動產成交案件實際資訊|[不動產成交案件實際資訊](http://plvr.land.moi.gov.tw/DownloadOpenData)|[資料來源](http://plvr.land.moi.gov.tw/DownloadOpenData)
 
 ### 資料集網站(日本)
 
@@ -128,4 +129,24 @@
   "season_two" => 第二季
   "season_three" => 第三季
   "season_four" => 第四季
+```
+
+### Api串接方法
+```
+---------------------------------------------------------------------
+| 接入名稱       | 傳入值        |回傳值      |需求及說明              |
+| ------------- |---------------| ----------|-----------------------|
+| api/addrSerach| country       |lifeindex  |lifeindex = 生活安全指數|
+|               | addr          |accident   |accident = 交通事故指數 |
+|               |               |estate     |estate = 近五年房價(季) |
+|               |               |age        |age = 年齡             |
+|               |               |areaid     |                       |
+---------------------------------------------------------------------
+| api/areaData  | areaid	|crimeData  |crimeData = 犯罪數量    |
+|		|		|policeData |policeData = 警局數量   |
+|		|		|trafficData|trafficData = 車禍數量  |
+|		|		|man	    |man = 男生數量          |
+|		|		|woman	    |woman = 女生數量        |
+---------------------------------------------------------------------
+
 ```
