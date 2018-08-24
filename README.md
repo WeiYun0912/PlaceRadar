@@ -1,6 +1,8 @@
 # PlaceRadar
 亞洲跨國黑客松 文件
 ===
+1. 作品網站：https://www.placeradar.at.tw/
+2. Chrome擴充套件：www.placeradar.at.tw/PlaceRadarChromeExtension.rar
 
 ### 一、 欲解決的問題與需求、解決方式說明
 不論是學生或是社會人士，都會有購屋與租屋的需求。在選擇房屋方
