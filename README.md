@@ -139,7 +139,7 @@
 |               |               |estate     |estate = 近五年房價(季) |
 |               |               |age        |age = 年齡             |
 |               |               |areaid     |                       |
-|------------------------------------------------------------------:|
+---------------------------------------------------------------------
 |api/areaData   |areaid		|crimeData  |crimeData = 犯罪數量    |
 |		|		|policeData |policeData = 警局數量   |	
 |		|		|trafficData|trafficData = 車禍數量  |
