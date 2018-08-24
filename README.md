@@ -140,9 +140,9 @@
 |               |               |age        |age = 年齡             |
 |               |               |areaid     |                       |
 ---------------------------------------------------------------------
-|api/areaData   |areaid		|crimeData  |crimeData = 犯罪數量	 |
-|		|		|policeData |policeData = 警局數量   |	
-|		|		|trafficData|trafficData = 車禍數量  |
+|api/areaData   |areaid		|crimeData  |crimeData = 犯罪數量|
+|		|		|policeData |policeData = 警局數量|	
+|		|		|trafficData|trafficData = 車禍數量|
 |		|		|man	    |man = 男生數量		 |
 |		|		|woman	    |woman = 女生數量	 |
 ---------------------------------------------------------------------
