@@ -110,7 +110,7 @@
   "id" => 主鍵
   "station_cnt" => 派出所數量
 ```
-* 派出所 (traffic_accident) 
+* 交通意外 (traffic_accident) 
 ```php=1
   "id" => 主鍵
   "accident_cnt" => 交通意外次數
