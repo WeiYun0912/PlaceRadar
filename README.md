@@ -51,6 +51,7 @@
 |2|犯罪資料|[犯罪資料](https://data.gov.tw/dataset/14200 )|[資料來源](https://data.gov.tw/)
 |3|即時交通事故資料|[即時交通事故資料](https://data.gov.tw/dataset/13139) |[資料來源](https://data.gov.tw/)
 |4|各縣(市)警察局暨所屬分駐(派出)所地址資料| [各縣(市)警察局暨所屬分駐(派出)所地址資料](https://data.gov.tw/dataset/5958 )|[資料來源](https://data.gov.tw/)
+|5|不動產成交案件實際資訊|[不動產成交案件實際資訊](http://plvr.land.moi.gov.tw/DownloadOpenData)|[資料來源](http://plvr.land.moi.gov.tw/DownloadOpenData)
 
 ### 資料集網站(日本)
 
